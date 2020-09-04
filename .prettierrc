@@ -1,5 +1,7 @@
 {
   "semi": false,
   "singleQuote": true,
-  "bracketSpacing": true
+  "bracketSpacing": true,
+  "proseWrap": "preserve",
+  "printWidth": 200
 }

@@ -1,5 +1,6 @@
 <template>
   <div id="app">
+    <router-view></router-view>
     <el-container>
       <el-header>Header</el-header>
       <el-container>
@@ -11,8 +12,6 @@
 </template>
 
 <script>
-// import HelloWorld from './components/HelloWorld.vue'
-
 export default {
   name: 'app'
 }
