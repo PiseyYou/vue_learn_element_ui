@@ -119,7 +119,7 @@ export default {
       this.roleId = role.id
       const { data: res } = await this.$http.get('rights/tree')
       if (res.meta.status !== 200) {
-        this.$message.error('获取权限失败')
+        return this.$message.error('获取权限失败')
       }
       this.rightslist = res.data
       // console.log(this.rightlist)
@@ -140,9 +140,9 @@ export default {
       // console.log(keys)
       const idStr = keys.join(',')
       console.log(idStr)
-      const { data: res } = await this.$http.post(`roles/${this.roldId}/rights`, { rids: idStr })
+      const { data: res } = await this.$http.post(`roles/${this.roleId}/rights`, { rids: idStr })
       if (res.meta.status !== 200) {
-        this.$message.error('分配权限失败')
+        return this.$message.error('分配权限失败')
       }
       this.$message.success('分配权限成功')
       this.getRolesList()
