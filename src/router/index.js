@@ -12,41 +12,20 @@ import Params from '@/components/goods/Params'
 Vue.use(VueRouter)
 
 const router = new VueRouter({
-  routes: [{
-      path: '/',
-      redirect: '/login'
-    },
-    {
-      path: '/login',
-      component: Login
-    },
+  routes: [
+    { path: '/', redirect: '/login' },
+    { path: '/login', component: Login },
     {
       path: '/home',
       component: Home,
       redirect: '/Welcome',
-      children: [{
-          path: '/Welcome',
-          component: Welcome
-        },
-        {
-          path: '/users',
-          component: Users
-        },
-        {
-          path: '/rights',
-          component: Rights
-        }, {
-          path: '/roles',
-          component: Roles
-        },
-        {
-          path: '/categories',
-          component: Cate
-        },
-        {
-          path: '/params',
-          component: Params
-        }
+      children: [
+        { path: '/Welcome', component: Welcome },
+        { path: '/users', component: Users },
+        { path: '/rights', component: Rights },
+        { path: '/roles', component: Roles },
+        { path: '/categories', component: Cate },
+        { path: '/params', component: Params }
       ]
     }
   ]

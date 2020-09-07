@@ -10,12 +10,8 @@
       <el-row class="cat_opt">
         <el-col>
           <span>选择商品分类: </span>
-          <el-cascader
-            v-model="selectedCateKeys"
-            :options="catelist"
-            :props="{ expandTrigger: 'hover', value: 'cat_id', label: 'cat_name', children: 'children' }"
-            @change="handleChange"
-          ></el-cascader>
+          <el-cascader v-model="selectedCateKeys" :options="catelist" :props="{ expandTrigger: 'hover', value: 'cat_id', label: 'cat_name', children: 'children' }"
+            @change="handleChange"></el-cascader>
         </el-col>
       </el-row>
 
@@ -25,18 +21,11 @@
           <el-table :data="manyTableData" border stripe>
             <el-table-column type="expand">
               <template slot-scope="scope">
-                <el-tag v-for="(item, i) in scope.row.attr_vals" :key="i" closable>
+                <el-tag v-for="(item, i) in scope.row.attr_vals" :key="i" closable @close="handleClose(i, scope.row)">
                   {{ item }}
                 </el-tag>
-                <el-input
-                  class="input-new-tag"
-                  v-if="scope.row.inputVisible"
-                  v-model="scope.row.inputValue"
-                  ref="saveTagInput"
-                  size="small"
-                  @keyup.enter.native="handleInputConfirm"
-                  @blur="handleInputConfirm"
-                >
+                <el-input class="input-new-tag" v-if="scope.row.inputVisible" v-model="scope.row.inputValue" ref="saveTagInput" size="small"
+                  @keyup.enter.native="handleInputConfirm(scope.row)" @blur="handleInputConfirm(scope.row)">
                 </el-input>
                 <el-button v-else class="button-new-tag" size="small" @click="showInput(scope.row)">+ New Tag</el-button>
               </template>
@@ -60,15 +49,8 @@
                 <el-tag v-for="(item, i) in scope.row.attr_vals" :key="i" closable @close="handleClose(i, scope.row)">
                   {{ item }}
                 </el-tag>
-                <el-input
-                  class="input-new-tag"
-                  v-if="scope.row.inputVisible"
-                  v-model="scope.row.inputValue"
-                  ref="saveTagInput"
-                  size="small"
-                  @keyup.enter.native="handleInputConfirm(scope.row)"
-                  @blur="handleInputConfirm(scope.row)"
-                >
+                <el-input class="input-new-tag" v-if="scope.row.inputVisible" v-model="scope.row.inputValue" ref="saveTagInput" size="small"
+                  @keyup.enter.native="handleInputConfirm(scope.row)" @blur="handleInputConfirm(scope.row)">
                 </el-input>
                 <el-button v-else class="button-new-tag" size="small" @click="showInput(scope.row)">+ New Tag</el-button>
               </template>
@@ -93,7 +75,7 @@
         </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
-        <el-button @click="dialogVisible = false">取 消</el-button>
+        <el-button @click="addDialogVisible = false">取 消</el-button>
         <el-button type="primary" @click="addParams">确 定</el-button>
       </span>
     </el-dialog>
@@ -105,7 +87,7 @@
         </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
-        <el-button @click="dialogVisible = false">取 消</el-button>
+        <el-button @click="editDialogVisible = false">取 消</el-button>
         <el-button type="primary" @click="editParams">确 定</el-button>
       </span>
     </el-dialog>
@@ -114,7 +96,7 @@
 
 <script>
 export default {
-  data() {
+  data () {
     return {
       catelist: [],
       selectedCateKeys: [],
@@ -138,12 +120,12 @@ export default {
     }
   },
 
-  created() {
+  created () {
     this.getCateList()
   },
 
   methods: {
-    async getCateList() {
+    async getCateList () {
       const { data: res } = await this.$http.get('categories')
       if (res.meta.status !== 200) {
         return this.$message.error('商品列表获取分类失败')
@@ -151,7 +133,7 @@ export default {
       this.catelist = res.data
       console.log(this.catelist)
     },
-    handleChange() {
+    handleChange () {
       this.getParamsData()
       // console.log(this.selectedCateKeys)
       // if (this.selectedCateKeys.length !== 3) {
@@ -166,11 +148,11 @@ export default {
       // this.$message.success('获取参数列表成功')
       // console.log(res.data)
     },
-    handleTabClick() {
+    handleTabClick () {
       console.log(this.activeName)
       this.getParamsData()
     },
-    async getParamsData() {
+    async getParamsData () {
       if (this.selectedCateKeys.length !== 3) {
         this.selectedCateKeys = []
         this.manyTableData = []
@@ -189,16 +171,16 @@ export default {
         item.inputVisible = false
         item.inputValue = ''
       })
-      if (this.activateName === 'many') {
+      if (this.activeName === 'many') {
         this.manyTableData = res.data
       } else {
         this.onlyTableData = res.data
       }
     },
-    addDialogClosed() {
+    addDialogClosed () {
       this.$refs.addFormRef.resetFields()
     },
-    addParams() {
+    addParams () {
       this.$refs.addFormRef.validate(async valid => {
         if (!valid) return
         const { data: res } = await this.$http.post(`categories/${this.cateId}/attributes`, {
@@ -213,7 +195,7 @@ export default {
         this.getParamsData()
       })
     },
-    async editDialog(attrId) {
+    async editDialog (attrId) {
       const { data: res } = await this.$http.get(`categories/${this.cateId}/attributes/${attrId}`, { params: { attr_sel: this.activeName } })
       if (res.meta.status !== 200) {
         return this.$message.error('获取参数信息失败')
@@ -222,12 +204,15 @@ export default {
       this.editForm = res.data
       this.editDialogVisible = true
     },
-    editParams() {
+    editDialogClosed () {
+      this.$refs.editFormRef.resetFields()
+    },
+    editParams () {
       this.$refs.editFormRef.validate(async valid => {
         if (!valid) return
-        console.log(this.editForm.attr_id)
-        console.log(this.editForm.attr_name)
-        console.log(this.activeName)
+        // console.log(this.editForm.attr_id)
+        // console.log(this.editForm.attr_name)
+        // console.log(this.activeName)
         const { data: res } = await this.$http.put(`categories/${this.cateId}/attributes/${this.editForm.attr_id}`, {
           attr_name: this.editForm.attr_name,
           attr_sel: this.activeName
@@ -240,10 +225,8 @@ export default {
         this.getParamsData()
       })
     },
-    editDialogClosed() {
-      this.$refs.editFormRef.resetFields()
-    },
-    async removeParams(attrId) {
+
+    async removeParams (attrId) {
       const confirmResult = await this.$confirm('此操作将永久删除该参数, 是否继续?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
@@ -259,7 +242,7 @@ export default {
       this.$message.success('删除参数成功')
       this.getParamsData()
     },
-    handleInputConfirm(row) {
+    handleInputConfirm (row) {
       if (row.inputValue.trim().length === 0) {
         row.inputValue = ''
         row.inputVisible = false
@@ -279,7 +262,7 @@ export default {
       // }
       // this.$message.success('修改参数成功')
     },
-    async saveAttrVals(row) {
+    async saveAttrVals (row) {
       const { data: res } = await this.$http.put(`categories/${this.cateId}/attributes/${row.attr_id}`, {
         attr_name: row.attr_name,
         attr_sel: row.attr_sel,
@@ -290,31 +273,31 @@ export default {
       }
       this.$message.success('修改参数成功')
     },
-    showInput(row) {
+    showInput (row) {
       row.inputVisible = true
       this.$nextTick(_ => {
         this.$refs.saveTagInput.$refs.input.focus()
       })
     },
-    handleClose(i, row) {
+    handleClose (i, row) {
       row.attr_vals.splice(i, 1)
       this.saveAttrVals(row)
     }
   },
   computed: {
-    isBtnDisabled() {
+    isBtnDisabled () {
       if (this.selectedCateKeys.length !== 3) {
         return true
       }
       return false
     },
-    cateId() {
+    cateId () {
       if (this.selectedCateKeys.length === 3) {
         return this.selectedCateKeys[2]
       }
       return null
     },
-    titleText() {
+    titleText () {
       if (this.activeName === 'many') {
         return '动态参数'
       }

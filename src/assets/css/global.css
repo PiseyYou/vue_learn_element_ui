@@ -26,10 +26,6 @@ body,
   margin-top: 15px;
 }
 
-.el-cascader_dropdown {
-  height: 200px !important;
-}
-
-.el-cascader-panedl {
-  height: 200px !important;
+.el-cascader-menu {
+  height: 300px;
 }
