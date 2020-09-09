@@ -183,11 +183,14 @@ export default {
         return this.$message.error('获取参数列表失败')
       }
       this.$message.success('获取参数列表成功')
-      console.log(res.data)
+      // console.log(res.data)
       res.data.forEach(item => {
         item.attr_vals = item.attr_vals ? item.attr_vals.split(' ') : []
-        item.inputVisible = false
-        item.inputValue = ''
+        // console.log(item.attr_vals)
+        // item.inputVisible = false
+        console.log(item.inputVisible)
+        // item.inputValue = ''
+        console.log(item.inputValue)
       })
       if (this.activeName === 'many') {
         this.manyTableData = res.data
@@ -334,5 +337,8 @@ export default {
 }
 .input-new-tag {
   width: 120px;
+}
+.el-cascader {
+  margin-left: 15px;
 }
 </style>

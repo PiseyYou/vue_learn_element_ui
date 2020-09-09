@@ -11,6 +11,10 @@ module.exports = {
     indent: ['off', 2],
     'no-console': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
     'no-debugger': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
-    'space-before-function-paren': 0
+    'space-before-function-paren': 0,
+    'camelcase': 0
+    // "camelcase": ["error", {
+    //   "allow": ["aa_bb"]
+    // }]
   }
 }

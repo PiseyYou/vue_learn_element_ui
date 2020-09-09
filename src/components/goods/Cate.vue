@@ -138,7 +138,8 @@ export default {
       if (res.meta.status !== 200) {
         return this.$message.error('获取商品列表失败')
       }
-      console.log(res.data)
+      console.log('res的数据是', res)
+      console.log('res.data的数据是', res.data)
       this.catelist = res.data.result
       this.total = res.data.total
     },
@@ -186,7 +187,7 @@ export default {
       })
     },
     addCateDialogClosed() {
-      this.$$refs.addCateFormRef.resetFields()
+      this.$refs.addCateFormRef.resetFields()
       this.selectKeys = []
       this.addCateForm.cat_level = 0
       this.addCateForm.cat_pid = 0
