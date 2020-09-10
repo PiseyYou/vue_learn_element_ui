@@ -10,12 +10,17 @@
       <el-row class="cat_opt">
         <el-col>
           <span>选择商品分类: </span>
+<<<<<<< HEAD
           <el-cascader
             v-model="selectedCateKeys"
             :options="catelist"
             :props="{ expandTrigger: 'hover', value: 'cat_id', label: 'cat_name', children: 'children' }"
             @change="handleChange"
           ></el-cascader>
+=======
+          <el-cascader v-model="selectedCateKeys" :options="catelist" :props="{ expandTrigger: 'hover', value: 'cat_id', label: 'cat_name', children: 'children' }"
+            @change="handleChange"></el-cascader>
+>>>>>>> goods_list
         </el-col>
       </el-row>
 
@@ -28,6 +33,7 @@
                 <el-tag v-for="(item, i) in scope.row.attr_vals" :key="i" closable @close="handleClose(i, scope.row)">
                   {{ item }}
                 </el-tag>
+<<<<<<< HEAD
                 <el-input
                   class="input-new-tag"
                   v-if="scope.row.inputVisible"
@@ -37,6 +43,10 @@
                   @keyup.enter.native="handleInputConfirm(scope.row)"
                   @blur="handleInputConfirm(scope.row)"
                 >
+=======
+                <el-input class="input-new-tag" v-if="scope.row.inputVisible" v-model="scope.row.inputValue" ref="saveTagInput" size="small"
+                  @keyup.enter.native="handleInputConfirm(scope.row)" @blur="handleInputConfirm(scope.row)">
+>>>>>>> goods_list
                 </el-input>
                 <el-button v-else class="button-new-tag" size="small" @click="showInput(scope.row)">+ New Tag</el-button>
               </template>
@@ -60,6 +70,7 @@
                 <el-tag v-for="(item, i) in scope.row.attr_vals" :key="i" closable @close="handleClose(i, scope.row)">
                   {{ item }}
                 </el-tag>
+<<<<<<< HEAD
                 <el-input
                   class="input-new-tag"
                   v-if="scope.row.inputVisible"
@@ -69,6 +80,10 @@
                   @keyup.enter.native="handleInputConfirm(scope.row)"
                   @blur="handleInputConfirm(scope.row)"
                 >
+=======
+                <el-input class="input-new-tag" v-if="scope.row.inputVisible" v-model="scope.row.inputValue" ref="saveTagInput" size="small"
+                  @keyup.enter.native="handleInputConfirm(scope.row)" @blur="handleInputConfirm(scope.row)">
+>>>>>>> goods_list
                 </el-input>
                 <el-button v-else class="button-new-tag" size="small" @click="showInput(scope.row)">+ New Tag</el-button>
               </template>
@@ -114,7 +129,11 @@
 
 <script>
 export default {
+<<<<<<< HEAD
   data() {
+=======
+  data () {
+>>>>>>> goods_list
     return {
       catelist: [],
       selectedCateKeys: [],
@@ -138,12 +157,20 @@ export default {
     }
   },
 
+<<<<<<< HEAD
   created() {
+=======
+  created () {
+>>>>>>> goods_list
     this.getCateList()
   },
 
   methods: {
+<<<<<<< HEAD
     async getCateList() {
+=======
+    async getCateList () {
+>>>>>>> goods_list
       const { data: res } = await this.$http.get('categories')
       if (res.meta.status !== 200) {
         return this.$message.error('商品列表获取分类失败')
@@ -151,7 +178,11 @@ export default {
       this.catelist = res.data
       console.log(this.catelist)
     },
+<<<<<<< HEAD
     handleChange() {
+=======
+    handleChange () {
+>>>>>>> goods_list
       this.getParamsData()
       // console.log(this.selectedCateKeys)
       // if (this.selectedCateKeys.length !== 3) {
@@ -166,11 +197,19 @@ export default {
       // this.$message.success('获取参数列表成功')
       // console.log(res.data)
     },
+<<<<<<< HEAD
     handleTabClick() {
       console.log(this.activeName)
       this.getParamsData()
     },
     async getParamsData() {
+=======
+    handleTabClick () {
+      console.log(this.activeName)
+      this.getParamsData()
+    },
+    async getParamsData () {
+>>>>>>> goods_list
       if (this.selectedCateKeys.length !== 3) {
         this.selectedCateKeys = []
         this.manyTableData = []
@@ -183,6 +222,7 @@ export default {
         return this.$message.error('获取参数列表失败')
       }
       this.$message.success('获取参数列表成功')
+<<<<<<< HEAD
       // console.log(res.data)
       res.data.forEach(item => {
         item.attr_vals = item.attr_vals ? item.attr_vals.split(' ') : []
@@ -191,6 +231,13 @@ export default {
         console.log(item.inputVisible)
         // item.inputValue = ''
         console.log(item.inputValue)
+=======
+      console.log(res.data)
+      res.data.forEach(item => {
+        item.attr_vals = item.attr_vals ? item.attr_vals.split(' ') : []
+        item.inputVisible = false
+        item.inputValue = ''
+>>>>>>> goods_list
       })
       if (this.activeName === 'many') {
         this.manyTableData = res.data
@@ -198,10 +245,17 @@ export default {
         this.onlyTableData = res.data
       }
     },
+<<<<<<< HEAD
     addDialogClosed() {
       this.$refs.addFormRef.resetFields()
     },
     addParams() {
+=======
+    addDialogClosed () {
+      this.$refs.addFormRef.resetFields()
+    },
+    addParams () {
+>>>>>>> goods_list
       this.$refs.addFormRef.validate(async valid => {
         if (!valid) return
         const { data: res } = await this.$http.post(`categories/${this.cateId}/attributes`, {
@@ -216,8 +270,13 @@ export default {
         this.getParamsData()
       })
     },
+<<<<<<< HEAD
     async editDialog(attr_id) {
       const { data: res } = await this.$http.get(`categories/${this.cateId}/attributes/${attr_id}`, { params: { attr_sel: this.activeName } })
+=======
+    async editDialog (attrId) {
+      const { data: res } = await this.$http.get(`categories/${this.cateId}/attributes/${attrId}`, { params: { attr_sel: this.activeName } })
+>>>>>>> goods_list
       if (res.meta.status !== 200) {
         return this.$message.error('获取参数信息失败')
       }
@@ -225,10 +284,17 @@ export default {
       this.editForm = res.data
       this.editDialogVisible = true
     },
+<<<<<<< HEAD
     editDialogClosed() {
       this.$refs.editFormRef.resetFields()
     },
     editParams() {
+=======
+    editDialogClosed () {
+      this.$refs.editFormRef.resetFields()
+    },
+    editParams () {
+>>>>>>> goods_list
       this.$refs.editFormRef.validate(async valid => {
         if (!valid) return
         // console.log(this.editForm.attr_id)
@@ -247,7 +313,11 @@ export default {
       })
     },
 
+<<<<<<< HEAD
     async removeParams(attr_id) {
+=======
+    async removeParams (attrId) {
+>>>>>>> goods_list
       const confirmResult = await this.$confirm('此操作将永久删除该参数, 是否继续?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
@@ -256,14 +326,22 @@ export default {
       if (confirmResult !== 'confirm') {
         return this.$message.info('已取消删除')
       }
+<<<<<<< HEAD
       const { data: res } = await this.$http.delete(`categories/${this.cateId}/attributes/${attr_id}`)
+=======
+      const { data: res } = await this.$http.delete(`categories/${this.cateId}/attributes/${attrId}`)
+>>>>>>> goods_list
       if (res.meta.status !== 200) {
         return this.$message.error('删除参数失败')
       }
       this.$message.success('删除参数成功')
       this.getParamsData()
     },
+<<<<<<< HEAD
     handleInputConfirm(row) {
+=======
+    handleInputConfirm (row) {
+>>>>>>> goods_list
       if (row.inputValue.trim().length === 0) {
         row.inputValue = ''
         row.inputVisible = false
@@ -283,7 +361,11 @@ export default {
       // }
       // this.$message.success('修改参数成功')
     },
+<<<<<<< HEAD
     async saveAttrVals(row) {
+=======
+    async saveAttrVals (row) {
+>>>>>>> goods_list
       const { data: res } = await this.$http.put(`categories/${this.cateId}/attributes/${row.attr_id}`, {
         attr_name: row.attr_name,
         attr_sel: row.attr_sel,
@@ -294,31 +376,51 @@ export default {
       }
       this.$message.success('修改参数成功')
     },
+<<<<<<< HEAD
     showInput(row) {
+=======
+    showInput (row) {
+>>>>>>> goods_list
       row.inputVisible = true
       this.$nextTick(_ => {
         this.$refs.saveTagInput.$refs.input.focus()
       })
     },
+<<<<<<< HEAD
     handleClose(i, row) {
+=======
+    handleClose (i, row) {
+>>>>>>> goods_list
       row.attr_vals.splice(i, 1)
       this.saveAttrVals(row)
     }
   },
   computed: {
+<<<<<<< HEAD
     isBtnDisabled() {
+=======
+    isBtnDisabled () {
+>>>>>>> goods_list
       if (this.selectedCateKeys.length !== 3) {
         return true
       }
       return false
     },
+<<<<<<< HEAD
     cateId() {
+=======
+    cateId () {
+>>>>>>> goods_list
       if (this.selectedCateKeys.length === 3) {
         return this.selectedCateKeys[2]
       }
       return null
     },
+<<<<<<< HEAD
     titleText() {
+=======
+    titleText () {
+>>>>>>> goods_list
       if (this.activeName === 'many') {
         return '动态参数'
       }
@@ -338,7 +440,10 @@ export default {
 .input-new-tag {
   width: 120px;
 }
+<<<<<<< HEAD
 .el-cascader {
   margin-left: 15px;
 }
+=======
+>>>>>>> goods_list
 </style>

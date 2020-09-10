@@ -20,10 +20,25 @@
       <el-form :model="addForm" :rules="addFormRules" ref="addFormRef" label-width="100px" label-position="top">
         <el-tabs v-model="activeIndex" :tab-position="'left'" :before-leave="beforeTabLeave" @tab-click="tabClicked">
           <el-tab-pane label="基本信息" name="0">
+<<<<<<< HEAD
             <el-form-item label="商品名称" prop="goods_name"> <el-input v-model="addForm.goods_name"></el-input></el-form-item>
             <el-form-item label="商品价格" prop="goods_price"> <el-input v-model="addForm.goods_price" type="number"></el-input></el-form-item>
             <el-form-item label="商品重量" prop="goods_weight"> <el-input v-model="addForm.goods_weight" type="number"></el-input></el-form-item>
             <el-form-item label="商品数量" prop="goods_number"> <el-input v-model="addForm.goods_number" type="number"></el-input></el-form-item>
+=======
+            <el-form-item label="商品名称" prop="goods_name">
+              <el-input v-model="addForm.goods_name"></el-input>
+            </el-form-item>
+            <el-form-item label="商品价格" prop="goods_price">
+              <el-input v-model="addForm.goods_price" type="number"></el-input>
+            </el-form-item>
+            <el-form-item label="商品重量" prop="goods_weight">
+              <el-input v-model="addForm.goods_weight" type="number"></el-input>
+            </el-form-item>
+            <el-form-item label="商品数量" prop="goods_number">
+              <el-input v-model="addForm.goods_number" type="number"></el-input>
+            </el-form-item>
+>>>>>>> goods_list
             <el-form-item label="商品分类" prop="goods_cat">
               <el-cascader
                 v-model="addForm.goods_cat"
@@ -34,6 +49,7 @@
             </el-form-item>
           </el-tab-pane>
           <el-tab-pane label="商品参数" name="1">
+<<<<<<< HEAD
             <el-form-item :label="item.attr_name" v-for="item in manyTableData" :key="item.attr_id"></el-form-item>
             <!-- <el-checkbox-group v-model="item.attr_vals">
               <el-checkbox :label="cb" v-for="(cb, i) in item.attr_vals" :key="i" border></el-checkbox
@@ -45,10 +61,50 @@
         </el-tabs>
       </el-form>
     </el-card>
+=======
+            <el-form-item :label="item.attr_name" v-for="item in manyTableData" :key="item.attr_id">
+              <el-checkbox-group v-model="item.attr_vals">
+                <el-checkbox :label="cb" v-for="(cb, i) in item.attr_vals" :key="i" border></el-checkbox>
+              </el-checkbox-group>
+            </el-form-item>
+          </el-tab-pane>
+          <el-tab-pane label="商品属性" name="2">
+            <el-form-item :label="item.attr_name" v-for="item in onlyTableData" :key="item.attr_id">
+              <el-input v-model="item.attr_vals"></el-input>
+            </el-form-item>
+          </el-tab-pane>
+          <el-tab-pane label="商品图片" name="3">
+            <el-upload
+              :action="uploadURL"
+              :on-preview="handlePreview"
+              :on-remove="handleRemove"
+              :on-success="handleSuccess"
+              list-type="picture"
+              :headers="headerObj"
+            >
+              <el-button size="small" type="primary">点击上传</el-button>
+            </el-upload>
+          </el-tab-pane>
+          <el-tab-pane label="商品内容" name="4">
+            <quill-editor v-model="addForm.goods_introduce"></quill-editor>
+            <el-button type="primary" class="btnAdd" @click="add">添加商品</el-button>
+          </el-tab-pane>
+        </el-tabs>
+      </el-form>
+    </el-card>
+
+    <el-dialog title="图片预览" :visible.sync="previewVisible" width="50%" class="previewImg">
+      <img :src="previewPath" alt="" />
+    </el-dialog>
+>>>>>>> goods_list
   </div>
 </template>
 
 <script>
+<<<<<<< HEAD
+=======
+import _ from 'lodash'
+>>>>>>> goods_list
 export default {
   data() {
     return {
@@ -58,7 +114,14 @@ export default {
         goods_price: 0,
         goods_weight: 0,
         goods_number: 0,
+<<<<<<< HEAD
         goods_cat: []
+=======
+        goods_cat: [],
+        pics: [],
+        goods_introduce: '',
+        attrs: []
+>>>>>>> goods_list
       },
       addFormRules: {
         goods_name: [{ required: true, message: '请输入商品名称', trigger: 'blur' }],
@@ -68,7 +131,18 @@ export default {
         goods_cat: [{ required: true, message: '请选择商品分类', trigger: 'blur' }]
       },
       catelist: [],
+<<<<<<< HEAD
       manyTableData: []
+=======
+      manyTableData: [],
+      onlyTableData: [],
+      uploadURL: 'http://127.0.0.1:8888/api/private/v1/upload',
+      headerObj: {
+        Authorization: window.sessionStorage.getItem('token')
+      },
+      previewPath: '',
+      previewVisible: false
+>>>>>>> goods_list
     }
   },
 
@@ -112,12 +186,79 @@ export default {
           return this.$message.error('获取动态参数列表失败！')
         }
         this.$message.success('获取动态参数列表成功')
+<<<<<<< HEAD
         console.log(res.data)
         res.data.forEach(item => {
           item.attr_vals = item.attr_vals.length === 0 ? [] : item.attr_vals.split(' ')
         })
         this.manyTableData = res.data
       }
+=======
+        // console.log(res.data)
+        res.data.forEach(item => {
+          item.attr_vals = item.attr_vals.length === 0 ? [] : item.attr_vals.split(' ')
+          // console.log(item.attr_vals)
+        })
+        this.manyTableData = res.data
+      } else if (this.activeIndex === '2') {
+        console.log('静态参数列表')
+        const { data: res } = await this.$http.get(`categories/${this.cateId}/attributes`, {
+          params: { sel: 'only' }
+        })
+        if (res.meta.status !== 200) {
+          return this.$message.error('获取静态属性列表失败！')
+        }
+        this.$message.success('获取静态属性列表成功')
+        console.log(res.data)
+        this.onlyTableData = res.data
+      }
+    },
+    handlePreview(file) {
+      console.log(file)
+      this.previewPath = file.response.data.url
+      this.previewVisible = true
+    },
+    handleRemove(file) {
+      console.log(file)
+      const filePath = file.response.data.tmp_path
+      console.log(filePath)
+      const i = this.addForm.pics.findIndex(x => x.pic === filePath)
+      this.addForm.pics.splice(i, 1)
+      console.log(this.addForm)
+    },
+    handleSuccess(response) {
+      console.log(response)
+      const picInfo = { pic: response.data.tmp_path }
+      this.addForm.pics.push(picInfo)
+      console.log(this.addForm)
+    },
+    add() {
+      console.log(this.addForm)
+      this.$refs.addFormRef.validate(async valid => {
+        if (!valid) {
+          return this.$message.error('请填写必要的表单项')
+        }
+        const form = _.cloneDeep(this.addForm)
+        form.goods_cat = form.goods_cat.join(',')
+        this.manyTableData.forEach(item => {
+          const newInfo = { attr_id: item.attr_id, attr_value: item.attr_vals.join(' ') }
+          this.addForm.attrs.push(newInfo)
+        })
+        this.onlyTableData.forEach(item => {
+          const newInfo = { attr_id: item.attr_id, attr_value: item.attr_vals }
+          this.addForm.attrs.push(newInfo)
+        })
+        console.log('this.addForm.attrs的属性为', this.addForm.attrs)
+        form.attrs = this.addForm.attrs
+        console.log(form)
+        const { data: res } = await this.$http.post('goods', form)
+        if (res.meta.status !== 201) {
+          this.$message.error('添加商品失败')
+        }
+        this.$message.success('添加商品成功！')
+        this.$router.push('/goods')
+      })
+>>>>>>> goods_list
     }
   },
   computed: {
@@ -134,4 +275,13 @@ export default {
 .el-checkbox {
   margin: 0 10px 0 0 !important;
 }
+<<<<<<< HEAD
+=======
+.previewImg {
+  width: 100%;
+}
+.btnAdd {
+  margin-top: 15px;
+}
+>>>>>>> goods_list
 </style>

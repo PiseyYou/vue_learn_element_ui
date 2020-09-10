@@ -29,6 +29,7 @@ import {
   Select,
   Option,
   Cascader,
+<<<<<<< HEAD
   TabPane,
   Tabs,
   Alert,
@@ -36,6 +37,16 @@ import {
   Step,
   CheckboxGroup,
   Checkbox
+=======
+  Alert,
+  Tabs,
+  TabPane,
+  Steps,
+  Step,
+  CheckboxGroup,
+  Checkbox,
+  Upload
+>>>>>>> goods_list
 } from 'element-ui'
 
 Vue.use(Button)
@@ -65,12 +76,22 @@ Vue.use(Tree)
 Vue.use(Select)
 Vue.use(Option)
 Vue.use(Cascader)
+<<<<<<< HEAD
 Vue.use(TabPane)
 Vue.use(Tabs)
 Vue.use(Alert)
+=======
+Vue.use(Alert)
+Vue.use(Tabs)
+Vue.use(TabPane)
+>>>>>>> goods_list
 Vue.use(Steps)
 Vue.use(Step)
 Vue.use(CheckboxGroup)
 Vue.use(Checkbox)
+<<<<<<< HEAD
+=======
+Vue.use(Upload)
+>>>>>>> goods_list
 Vue.prototype.$message = Message
 Vue.prototype.$confirm = MessageBox.confirm

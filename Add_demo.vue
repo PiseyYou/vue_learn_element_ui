@@ -10,7 +10,12 @@
     <!-- 卡片视图 -->
     <el-card>
       <!-- 提示区域 -->
+<<<<<<< HEAD
       <el-alert title="添加商品信息" type="info" center show-icon :closable="false"> </el-alert>
+=======
+      <el-alert title="添加商品信息" type="info" center show-icon :closable="false">
+      </el-alert>
+>>>>>>> goods_list
       <!-- 步骤条区域 -->
       <el-steps :space="200" :active="activeIndex - 0" finish-status="success" align-center>
         <el-step title="基本信息"></el-step>
@@ -61,6 +66,10 @@
           <el-tab-pane label="商品内容" name="4">商品内容</el-tab-pane>
         </el-tabs>
       </el-form>
+<<<<<<< HEAD
+=======
+
+>>>>>>> goods_list
     </el-card>
   </div>
 </template>
@@ -80,11 +89,29 @@ export default {
         goods_cat: []
       },
       addFormRules: {
+<<<<<<< HEAD
         goods_name: [{ required: true, message: '请输入商品名称', trigger: 'blur' }],
         goods_price: [{ required: true, message: '请输入商品价格', trigger: 'blur' }],
         goods_weight: [{ required: true, message: '请输入商品重量', trigger: 'blur' }],
         goods_number: [{ required: true, message: '请输入商品数量', trigger: 'blur' }],
         goods_cat: [{ required: true, message: '请选择商品分类', trigger: 'blur' }]
+=======
+        goods_name: [
+          { required: true, message: '请输入商品名称', trigger: 'blur' }
+        ],
+        goods_price: [
+          { required: true, message: '请输入商品价格', trigger: 'blur' }
+        ],
+        goods_weight: [
+          { required: true, message: '请输入商品重量', trigger: 'blur' }
+        ],
+        goods_number: [
+          { required: true, message: '请输入商品数量', trigger: 'blur' }
+        ],
+        goods_cat: [
+          { required: true, message: '请选择商品分类', trigger: 'blur' }
+        ]
+>>>>>>> goods_list
       },
       // 商品分类列表
       catelist: [],
@@ -134,9 +161,18 @@ export default {
       // console.log(this.activeIndex)
       // 证明访问的是动态参数面板
       if (this.activeIndex === '1') {
+<<<<<<< HEAD
         const { data: res } = await this.$http.get(`categories/${this.cateId}/attributes`, {
           params: { sel: 'many' }
         })
+=======
+        const { data: res } = await this.$http.get(
+          `categories/${this.cateId}/attributes`,
+          {
+            params: { sel: 'many' }
+          }
+        )
+>>>>>>> goods_list
 
         if (res.meta.status !== 200) {
           return this.$message.error('获取动态参数列表失败！')
@@ -144,6 +180,7 @@ export default {
 
         console.log(res.data)
         res.data.forEach(item => {
+<<<<<<< HEAD
           item.attr_vals = item.attr_vals.length === 0 ? [] : item.attr_vals.split(' ')
         })
         this.manyTableData = res.data
@@ -151,6 +188,19 @@ export default {
         const { data: res } = await this.$http.get(`categories/${this.cateId}/attributes`, {
           params: { sel: 'only' }
         })
+=======
+          item.attr_vals =
+            item.attr_vals.length === 0 ? [] : item.attr_vals.split(' ')
+        })
+        this.manyTableData = res.data
+      } else if (this.activeIndex === '2') {
+        const { data: res } = await this.$http.get(
+          `categories/${this.cateId}/attributes`,
+          {
+            params: { sel: 'only' }
+          }
+        )
+>>>>>>> goods_list
 
         if (res.meta.status !== 200) {
           return this.$message.error('获取静态属性失败！')
