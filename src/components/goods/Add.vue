@@ -20,12 +20,6 @@
       <el-form :model="addForm" :rules="addFormRules" ref="addFormRef" label-width="100px" label-position="top">
         <el-tabs v-model="activeIndex" :tab-position="'left'" :before-leave="beforeTabLeave" @tab-click="tabClicked">
           <el-tab-pane label="基本信息" name="0">
-<<<<<<< HEAD
-            <el-form-item label="商品名称" prop="goods_name"> <el-input v-model="addForm.goods_name"></el-input></el-form-item>
-            <el-form-item label="商品价格" prop="goods_price"> <el-input v-model="addForm.goods_price" type="number"></el-input></el-form-item>
-            <el-form-item label="商品重量" prop="goods_weight"> <el-input v-model="addForm.goods_weight" type="number"></el-input></el-form-item>
-            <el-form-item label="商品数量" prop="goods_number"> <el-input v-model="addForm.goods_number" type="number"></el-input></el-form-item>
-=======
             <el-form-item label="商品名称" prop="goods_name">
               <el-input v-model="addForm.goods_name"></el-input>
             </el-form-item>
@@ -38,7 +32,6 @@
             <el-form-item label="商品数量" prop="goods_number">
               <el-input v-model="addForm.goods_number" type="number"></el-input>
             </el-form-item>
->>>>>>> goods_list
             <el-form-item label="商品分类" prop="goods_cat">
               <el-cascader
                 v-model="addForm.goods_cat"
@@ -49,19 +42,6 @@
             </el-form-item>
           </el-tab-pane>
           <el-tab-pane label="商品参数" name="1">
-<<<<<<< HEAD
-            <el-form-item :label="item.attr_name" v-for="item in manyTableData" :key="item.attr_id"></el-form-item>
-            <!-- <el-checkbox-group v-model="item.attr_vals">
-              <el-checkbox :label="cb" v-for="(cb, i) in item.attr_vals" :key="i" border></el-checkbox
-            ></el-checkbox-group> -->
-          </el-tab-pane>
-          <el-tab-pane label="商品属性" name="2">商品属性</el-tab-pane>
-          <el-tab-pane label="商品图片" name="3">商品图片</el-tab-pane>
-          <el-tab-pane label="商品内容" name="4">商品内容</el-tab-pane>
-        </el-tabs>
-      </el-form>
-    </el-card>
-=======
             <el-form-item :label="item.attr_name" v-for="item in manyTableData" :key="item.attr_id">
               <el-checkbox-group v-model="item.attr_vals">
                 <el-checkbox :label="cb" v-for="(cb, i) in item.attr_vals" :key="i" border></el-checkbox>
@@ -96,15 +76,11 @@
     <el-dialog title="图片预览" :visible.sync="previewVisible" width="50%" class="previewImg">
       <img :src="previewPath" alt="" />
     </el-dialog>
->>>>>>> goods_list
   </div>
 </template>
 
 <script>
-<<<<<<< HEAD
-=======
 import _ from 'lodash'
->>>>>>> goods_list
 export default {
   data() {
     return {
@@ -114,14 +90,10 @@ export default {
         goods_price: 0,
         goods_weight: 0,
         goods_number: 0,
-<<<<<<< HEAD
-        goods_cat: []
-=======
         goods_cat: [],
         pics: [],
         goods_introduce: '',
         attrs: []
->>>>>>> goods_list
       },
       addFormRules: {
         goods_name: [{ required: true, message: '请输入商品名称', trigger: 'blur' }],
@@ -131,9 +103,6 @@ export default {
         goods_cat: [{ required: true, message: '请选择商品分类', trigger: 'blur' }]
       },
       catelist: [],
-<<<<<<< HEAD
-      manyTableData: []
-=======
       manyTableData: [],
       onlyTableData: [],
       uploadURL: 'http://127.0.0.1:8888/api/private/v1/upload',
@@ -142,7 +111,6 @@ export default {
       },
       previewPath: '',
       previewVisible: false
->>>>>>> goods_list
     }
   },
 
@@ -186,14 +154,6 @@ export default {
           return this.$message.error('获取动态参数列表失败！')
         }
         this.$message.success('获取动态参数列表成功')
-<<<<<<< HEAD
-        console.log(res.data)
-        res.data.forEach(item => {
-          item.attr_vals = item.attr_vals.length === 0 ? [] : item.attr_vals.split(' ')
-        })
-        this.manyTableData = res.data
-      }
-=======
         // console.log(res.data)
         res.data.forEach(item => {
           item.attr_vals = item.attr_vals.length === 0 ? [] : item.attr_vals.split(' ')
@@ -258,7 +218,6 @@ export default {
         this.$message.success('添加商品成功！')
         this.$router.push('/goods')
       })
->>>>>>> goods_list
     }
   },
   computed: {
@@ -275,13 +234,10 @@ export default {
 .el-checkbox {
   margin: 0 10px 0 0 !important;
 }
-<<<<<<< HEAD
-=======
 .previewImg {
   width: 100%;
 }
 .btnAdd {
   margin-top: 15px;
 }
->>>>>>> goods_list
 </style>
