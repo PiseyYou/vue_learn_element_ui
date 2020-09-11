@@ -34,25 +34,28 @@
           </template>
         </el-table-column>
       </el-table>
-      <el-pagination
-        @size-change="handleSizeChange"
-        @current-change="handleCurrentChange"
-        :current-page="queryInfo.pagenum"
-        :page-sizes="[5, 10, 20, 30]"
-        :page-size="queryInfo.pagesize"
-        layout="total, sizes, prev, pager, next, jumper"
-        :total="total"
-      >
+      <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="queryInfo.pagenum" :page-sizes="[5, 10, 20, 30]"
+        :page-size="queryInfo.pagesize" layout="total, sizes, prev, pager, next, jumper" :total="total">
       </el-pagination>
     </el-card>
 
     <el-dialog title="商品编辑" :visible.sync="editDialogVisible" width="50%" @close="editDialogClosed">
       <el-form :model="goodsForm" :rules="goodsFormRules" ref="goodsFormRef" label-width="100px" class="demo-ruleForm">
-        <el-form-item label="商品名称" prop="goodsName"> <el-input v-model="goodsForm.goodsName"></el-input></el-form-item>
-        <el-form-item label="商品价格" prop="goodsPrice"> <el-input v-model="goodsForm.goodsPrice"></el-input></el-form-item>
-        <el-form-item label="商品重量" prop="goodsWeight"> <el-input v-model="goodsForm.goodsWeight"></el-input></el-form-item>
-        <el-form-item label="商品数量" prop="goodsNumber"> <el-input v-model="goodsForm.goodsNumber"></el-input></el-form-item>
-        <el-form-item label="商品介绍" prop="goodsIntroduce"> <el-input v-model="goodsForm.goodsIntroduce"></el-input></el-form-item>
+        <el-form-item label="商品名称" prop="goodsName">
+          <el-input v-model="goodsForm.goodsName"></el-input>
+        </el-form-item>
+        <el-form-item label="商品价格" prop="goodsPrice">
+          <el-input v-model="goodsForm.goodsPrice"></el-input>
+        </el-form-item>
+        <el-form-item label="商品重量" prop="goodsWeight">
+          <el-input v-model="goodsForm.goodsWeight"></el-input>
+        </el-form-item>
+        <el-form-item label="商品数量" prop="goodsNumber">
+          <el-input v-model="goodsForm.goodsNumber"></el-input>
+        </el-form-item>
+        <el-form-item label="商品介绍" prop="goodsIntroduce">
+          <el-input v-model="goodsForm.goodsIntroduce"></el-input>
+        </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
         <el-button @click="dialogVisible = false">取 消</el-button>
@@ -64,7 +67,7 @@
 
 <script>
 export default {
-  data() {
+  data () {
     return {
       goodslist: [],
       queryInfo: {
@@ -94,12 +97,12 @@ export default {
     }
   },
 
-  created() {
+  created () {
     this.getGoodsList()
   },
 
   methods: {
-    async getGoodsList() {
+    async getGoodsList () {
       const { data: res } = await this.$http.get('goods', { params: this.queryInfo })
       if (res.meta.status !== 200) {
         this.$message.error('商品列表获取失败')
@@ -112,15 +115,15 @@ export default {
     // getGoodsList() {
     //   this.getGoodsList()
     // },
-    handleSizeChange(newSize) {
+    handleSizeChange (newSize) {
       this.queryInfo.pagesize = newSize
       this.getGoodsList()
     },
-    handleCurrentChange(newPage) {
+    handleCurrentChange (newPage) {
       this.queryInfo.pagenum = newPage
       this.getGoodsList()
     },
-    async editDialog(attrId) {
+    async editDialog (attrId) {
       this.editDialogVisible = true
       const { data: res } = await this.$http.put(`goods/${attrId}`, { params: this.goodInfo })
       if (res.meta.status !== 200) {
@@ -134,10 +137,10 @@ export default {
       this.goodsForm.goodsWeight = res.data.goods_weight
       this.goodsForm.goodsIntroduce = res.data.goods_introduce
     },
-    editDialogClosed() {
+    editDialogClosed () {
       this.$refs.goodsFormRef.resetFields()
     },
-    goAddpage() {
+    goAddpage () {
       this.$router.push('/goods/add')
     }
   }
