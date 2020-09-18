@@ -3,5 +3,6 @@
   "singleQuote": true,
   "bracketSpacing": true,
   "proseWrap": "preserve",
-  "printWidth": 150
+  "printWidth": 200,
+  "prettier.trailingComma": "es5"
 }

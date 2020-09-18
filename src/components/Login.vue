@@ -54,7 +54,7 @@ export default {
     },
     login() {
       this.$refs.loginFormRef.validate(async valid => {
-        // console.log(valid)
+        // console.log('valid的信息为', valid)
         if (!valid) return
         // const result = await this.$http.post('login', this.loginForm)
         // console.log(result)
