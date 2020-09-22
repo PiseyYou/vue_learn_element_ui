@@ -19,26 +19,32 @@
         <el-table-column prop="order_price" label="订单价格"></el-table-column>
         <el-table-column prop="order_pay" label="是否付款">
           <template slot-scope="scope">
-            <el-tag type="success" v-if="scope.row.pay_status=== '1'">已付款</el-tag>
+            <el-tag type="success" v-if="scope.row.pay_status === '1'">已付款</el-tag>
             <el-tag type="danger" v-else>未付款</el-tag>
           </template>
         </el-table-column>
         <el-table-column prop="is_send" label="是否发货"></el-table-column>
         <el-table-column prop="create_time" label="下单时间">
           <template slot-scope="scope">
-            {{scope.row.create_time | dateFormat}}
+            {{ scope.row.create_time | dateFormat }}
           </template>
         </el-table-column>
         <el-table-column label="操作">
           <template slot-scope>
             <el-button type="primary" icon="el-icon-edit" size="mini" @click="showBox"></el-button>
             <el-button type="success" icon="el-icon-location" size="mini" @click="showProgressBox"></el-button>
-
           </template>
         </el-table-column>
       </el-table>
-      <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="queryInfo.pagenum" :page-sizes="[5, 10, 15, 20]"
-        :page-size="queryInfo.pagesize" layout="total, sizes, prev, pager, next, jumper" :total="total">
+      <el-pagination
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+        :current-page="queryInfo.pagenum"
+        :page-sizes="[5, 10, 15, 20]"
+        :page-size="queryInfo.pagesize"
+        layout="total, sizes, prev, pager, next, jumper"
+        :total="total"
+      >
       </el-pagination>
     </el-card>
     <el-dialog title="修改地址" :visible.sync="addressVisible" width="50%" @close="addressDialogClosed">
@@ -60,7 +66,7 @@
     <el-dialog title="物流进度" :visible.sync="progressVisible" width="50%">
       <el-timeline>
         <el-timeline-item v-for="(activity, index) in progressInfo" :key="index" :timestamp="activity.time">
-          {{activity.context}}
+          {{ activity.context }}
         </el-timeline-item>
       </el-timeline>
     </el-dialog>
@@ -70,7 +76,7 @@
 <script>
 import citydata from './citydata.js'
 export default {
-  data () {
+  data() {
     return {
       orderslist: [],
       queryInfo: {
@@ -94,12 +100,12 @@ export default {
     }
   },
 
-  created () {
+  created() {
     this.getOrderslist()
   },
 
   methods: {
-    async getOrderslist () {
+    async getOrderslist() {
       const { data: res } = await this.$http.get('orders', { params: this.queryInfo })
       if (res.meta.status !== 200) {
         this.$message.error('获取订单列表失败')
@@ -110,22 +116,22 @@ export default {
       this.total = res.data.total
       this.orderslist = res.data.goods
     },
-    handleSizeChange (newSize) {
+    handleSizeChange(newSize) {
       this.queryInfo.pagesize = newSize
       this.getOrderslist()
     },
-    handleCurrentChange (newPage) {
+    handleCurrentChange(newPage) {
       this.queryInfo.pagenum = newPage
       this.getOrderslist()
     },
-    showBox () {
+    showBox() {
       this.addressVisible = true
     },
-    addressDialogClosed () {
+    addressDialogClosed() {
       this.$refs.addressFormRef.resetFields()
       // this.addressVisible = false
     },
-    async showProgressBox () {
+    async showProgressBox() {
       const { data: res } = await this.$http.get('/kuaidi/1106975712662')
       if (res.meta.status !== 200) {
         this.$message.error('获取物流信息失败')

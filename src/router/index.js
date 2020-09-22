@@ -16,7 +16,8 @@ import Report from '../components/report/Report'
 Vue.use(VueRouter)
 
 const router = new VueRouter({
-  routes: [{
+  routes: [
+    {
       path: '/',
       redirect: '/login'
     },
