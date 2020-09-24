@@ -4,5 +4,5 @@
   "bracketSpacing": true,
   "proseWrap": "preserve",
   "printWidth": 200,
-  "prettier.trailingComma": "es6"
+  "prettier.trailingComma": "es5"
 }

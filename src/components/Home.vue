@@ -71,7 +71,7 @@ export default {
       const { data: res } = await this.$http.get('menus')
       if (res.meta.status !== 200) return this.$message.error(res.meta.msg)
       this.menulist = res.data
-      console.log('res的值为', res)
+      // console.log('res的值为', res)
     },
     // 点击按钮，切换组件展开
     toggleCollapse() {
