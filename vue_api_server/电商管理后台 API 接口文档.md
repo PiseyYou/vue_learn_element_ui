@@ -106,7 +106,7 @@
 ```json
 {
     "data": {
-        "totalpage": 5,
+        "total": 5,
         "pagenum": 4,
         "users": [
             {
@@ -435,7 +435,7 @@ type=tree
 ```json
 {
     "data":
-        {
+        [
             "id": 101,
             "authName": "商品管理",
             "path": null,
@@ -447,7 +447,7 @@ type=tree
                     "children": []
                 }
             ]
-        }
+        ]
     "meta": {
         "msg": "获取菜单列表成功",
         "status": 200

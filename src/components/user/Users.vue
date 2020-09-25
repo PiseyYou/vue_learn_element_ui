@@ -154,35 +154,19 @@ export default {
       },
       addFormRules: {
         username: [
-          {
-            required: true,
-            message: '请输入用户名',
-            trigger: 'blur'
-          },
+          { required: true, message: '请输入用户名', trigger: 'blur' },
           { min: 3, max: 10, message: '用户名长度在3-10之间', trigger: 'blur' }
         ],
         password: [
-          {
-            required: true,
-            message: '请输入密码',
-            trigger: 'blur'
-          },
+          { required: true, message: '请输入密码', trigger: 'blur' },
           { min: 6, max: 15, message: '用户名长度在6-15之间', trigger: 'blur' }
         ],
         email: [
-          {
-            required: true,
-            message: '请输入邮箱',
-            trigger: 'blur'
-          },
+          { required: true, message: '请输入邮箱', trigger: 'blur' },
           { validator: checkEmail, trigger: 'blur' }
         ],
         mobile: [
-          {
-            required: true,
-            message: '请输入手机',
-            trigger: 'blur'
-          },
+          { required: true, message: '请输入手机', trigger: 'blur' },
           { validator: checkMobile, trigger: 'blur' }
         ]
       },
@@ -209,7 +193,7 @@ export default {
       }
       this.userlist = res.data.users
       this.total = res.data.total
-      console.log(res)
+      // console.log(res)
     },
     // 监听pagesize改变的事件
     handleSizeChange(newSize) {
@@ -225,7 +209,7 @@ export default {
     },
     // 监听switch状态的改变
     async userStateChanged(userinfo) {
-      console.log(userinfo)
+      // console.log(userinfo)
       const { data: res } = await this.$http.put(`users/${userinfo.id}/state/${userinfo.mg_state}`)
       if (res.meta.status !== 200) {
         userinfo.mg_state = !userinfo.mg_state
@@ -238,13 +222,13 @@ export default {
     },
     addUser() {
       this.$refs.addFormRef.validate(async valid => {
-        console.log(valid)
+        // console.log(valid)
         if (!valid) return
         const { data: res } = await this.$http.post('users', this.addForm)
         if (res.meta.status !== 201) {
-          this.$message.error('添加用户失败')
+          return this.$message.error('添加用户失败')
         }
-        console.log(valid)
+        // console.log(valid)
         this.$message.success('添加用户成功')
         this.addDialogVisible = false
         this.getUserList()
@@ -262,9 +246,9 @@ export default {
     editDialogClosed() {
       this.$refs.editFormRef.resetFields()
     },
-    editUserInfo() {
+    async editUserInfo() {
       this.$refs.editFormRef.validate(async valid => {
-        console.log(valid)
+        // console.log(valid)
         if (!valid) return
         const { data: res } = await this.$http.put('users/' + this.editForm.id, { email: this.editForm.email, mobile: this.editForm.mobile })
         if (res.meta.status !== 200) {
@@ -276,7 +260,7 @@ export default {
       })
     },
     async removeUserById(id) {
-      console.log(id)
+      // console.log(id)
       const confirmResult = await this.$confirm('此操作将永久删除该用户, 是否继续?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
