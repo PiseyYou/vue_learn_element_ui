@@ -220,7 +220,7 @@ export default {
     addDialogClosed() {
       this.$refs.addFormRef.resetFields()
     },
-    addUser() {
+    async addUser() {
       this.$refs.addFormRef.validate(async valid => {
         // console.log(valid)
         if (!valid) return
@@ -235,7 +235,7 @@ export default {
       })
     },
     async showEditDialog(id) {
-      console.log(id)
+      // console.log(id)
       const { data: res } = await this.$http.get('users/' + id)
       if (res.meta.status !== 200) {
         return this.$message.error('查询用户信息失败')

@@ -40,7 +40,7 @@ export default {
         return this.$message.error('获取列表权限失败')
       }
       this.rightsList = res.data
-      console.log(res.data)
+      // console.log(res.data)
     }
   }
 }

@@ -28,9 +28,7 @@
                     <i class="el-icon-caret-right"></i>
                   </el-col>
                   <el-col :span="18">
-                    <el-tag type="warning" v-for="item3 in item2.children" :key="item3.id" closable @close="removeRightById(scope.row, item3.id)">{{
-                      item3.authName
-                    }}</el-tag>
+                    <el-tag type="warning" v-for="item3 in item2.children" :key="item3.id" closable @close="removeRightById(scope.row, item3.id)">{{ item3.authName }}</el-tag>
                   </el-col>
                 </el-row>
               </el-col>
@@ -43,7 +41,7 @@
         <el-table-column label="角色描述" prop="roleDesc"> </el-table-column>
         <el-table-column label="操作" width="300px">
           <template slot-scope="scope">
-            <el-button type="primary" icon="el-icon-search" size="mini">搜索</el-button>
+            <el-button type="primary" icon="el-icon-search" size="mini">编辑</el-button>
             <el-button type="danger" icon="el-icon-search" size="mini">删除</el-button>
             <el-button type="warning" icon="el-icon-search" size="mini" @click="showSetRightDialog(scope.row)">分配权限</el-button>
           </template>
@@ -53,15 +51,7 @@
 
     <el-dialog title="分配权限" :visible.sync="setRightDialogVisible" width="50%" @close="setRightDialogClosed">
       <!-- 树形控件 -->
-      <el-tree
-        :data="rightslist"
-        :props="treeProps"
-        ref="treeRef"
-        show-checkbox
-        node-key="id"
-        default-expand-all
-        :default-checked-keys="defKeys"
-      ></el-tree>
+      <el-tree :data="rightslist" :props="treeProps" ref="treeRef" show-checkbox node-key="id" default-expand-all :default-checked-keys="defKeys"></el-tree>
       <span slot="footer" class="dialog-footer">
         <el-button @click="setRightDialogVisible = false">取 消</el-button>
         <el-button type="primary" @click="allotRights">确 定</el-button>
@@ -95,7 +85,7 @@ export default {
         return this.$message.error('获取角色列表失败')
       }
       this.rolelist = res.data
-      console.log(this.rolelist)
+      // console.log(this.rolelist)
     },
     async removeRightById(role, rightId) {
       const confirmResult = await this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
@@ -137,9 +127,9 @@ export default {
     },
     async allotRights() {
       const keys = [...this.$refs.treeRef.getCheckedKeys(), ...this.$refs.treeRef.getHalfCheckedKeys()]
-      // console.log(keys)
+      // console.log('获取keys的值为', keys)
       const idStr = keys.join(',')
-      console.log(idStr)
+      // console.log(idStr)
       const { data: res } = await this.$http.post(`roles/${this.roleId}/rights`, { rids: idStr })
       if (res.meta.status !== 200) {
         return this.$message.error('分配权限失败')

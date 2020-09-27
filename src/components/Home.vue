@@ -77,9 +77,9 @@ export default {
     toggleCollapse() {
       this.isCollapse = !this.isCollapse
     },
-    saveNavState(actitePath) {
-      window.sessionStorage.setItem('activePath', actitePath)
-      this.activatePath = actitePath
+    saveNavState(activatePath) {
+      window.sessionStorage.setItem('activePath', activatePath)
+      this.activatePath = activatePath
     }
   }
 }
