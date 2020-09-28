@@ -251,6 +251,7 @@ export default {
         // console.log(valid)
         if (!valid) return
         const { data: res } = await this.$http.put('users/' + this.editForm.id, { email: this.editForm.email, mobile: this.editForm.mobile })
+        console.log('editForm.id', this.editForm.id)
         if (res.meta.status !== 200) {
           return this.$message.error('更新用户信息失败')
         }

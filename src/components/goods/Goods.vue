@@ -3,7 +3,7 @@
     <el-breadcrumb separator-class="el-icon-arrow-right">
       <el-breadcrumb-item :to="{ path: '/home' }">首页</el-breadcrumb-item>
       <el-breadcrumb-item>商品管理</el-breadcrumb-item>
-      <el-breadcrumb-item>商品管理</el-breadcrumb-item>
+      <el-breadcrumb-item>商品列表</el-breadcrumb-item>
     </el-breadcrumb>
 
     <el-card>
@@ -29,13 +29,20 @@
         </el-table-column>
         <el-table-column label="操作" width="200">
           <template slot-scope="scope">
-            <el-button type="primary" size="mini" icon="el-icon-edit" @click="editDialog(scope.row.attr_id)">编辑</el-button>
-            <el-button type="danger" size="mini" icon="el-icon-delete" @click="removeParams(scope.row.attr_id)">删除</el-button>
+            <el-button type="primary" size="mini" icon="el-icon-edit" @click="editDialog(scope.row.goods_id)">编辑</el-button>
+            <el-button type="danger" size="mini" icon="el-icon-delete" @click="removeParams(scope.row.goods_id)">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
-      <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="queryInfo.pagenum" :page-sizes="[5, 10, 20, 30]"
-        :page-size="queryInfo.pagesize" layout="total, sizes, prev, pager, next, jumper" :total="total">
+      <el-pagination
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+        :current-page="queryInfo.pagenum"
+        :page-sizes="[5, 10, 20, 30]"
+        :page-size="queryInfo.pagesize"
+        layout="total, sizes, prev, pager, next, jumper"
+        :total="total"
+      >
       </el-pagination>
     </el-card>
 
@@ -67,7 +74,7 @@
 
 <script>
 export default {
-  data () {
+  data() {
     return {
       goodslist: [],
       queryInfo: {
@@ -97,15 +104,15 @@ export default {
     }
   },
 
-  created () {
+  created() {
     this.getGoodsList()
   },
 
   methods: {
-    async getGoodsList () {
+    async getGoodsList() {
       const { data: res } = await this.$http.get('goods', { params: this.queryInfo })
       if (res.meta.status !== 200) {
-        this.$message.error('商品列表获取失败')
+        return this.$message.error('商品列表获取失败')
       }
       this.$message.success('商品列表获取成功')
       this.queryInfo.pagenum = res.data.pagenum - 0
@@ -115,19 +122,30 @@ export default {
     // getGoodsList() {
     //   this.getGoodsList()
     // },
-    handleSizeChange (newSize) {
+    handleSizeChange(newSize) {
       this.queryInfo.pagesize = newSize
       this.getGoodsList()
     },
-    handleCurrentChange (newPage) {
+    handleCurrentChange(newPage) {
       this.queryInfo.pagenum = newPage
       this.getGoodsList()
     },
-    async editDialog (attrId) {
+    async editDialog(attrId) {
+      // console.log('attrId的值为', attrId)
       this.editDialogVisible = true
+      // const { data: res } = await this.$http.put(`goods/${attrId}`, {
+      //   goods_name: this.goodInfo.goodsName,
+      //   goods_price: this.goodInfo.goodsPrice,
+      //   goods_number: this.goodInfo.goodsNumber,
+      //   goods_weight: this.goodInfo.goodsWeight,
+      //   goods_introduce: this.goodInfo.goodsIntroduce,
+      //   pics: this.goodInfo.pics,
+      //   attrs: this.goodInfo.attrs
+      // })
+
       const { data: res } = await this.$http.put(`goods/${attrId}`, { params: this.goodInfo })
-      if (res.meta.status !== 200) {
-        this.$message.error('获取商品失败')
+      if (res.meta.status !== 201) {
+        return this.$message.error('获取商品失败')
       }
       this.$message.success('获取商品成功')
       // this.goodsForm = res.data
@@ -137,10 +155,10 @@ export default {
       this.goodsForm.goodsWeight = res.data.goods_weight
       this.goodsForm.goodsIntroduce = res.data.goods_introduce
     },
-    editDialogClosed () {
+    editDialogClosed() {
       this.$refs.goodsFormRef.resetFields()
     },
-    goAddpage () {
+    goAddpage() {
       this.$router.push('/goods/add')
     }
   }
