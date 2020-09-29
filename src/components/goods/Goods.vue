@@ -29,7 +29,7 @@
         </el-table-column>
         <el-table-column label="操作" width="200">
           <template slot-scope="scope">
-            <el-button type="primary" size="mini" icon="el-icon-edit" @click="editDialog(scope.row.goods_id)">编辑</el-button>
+            <el-button type="primary" size="mini" icon="el-icon-edit" @click="showEditDialog(scope.row.goods_id)">编辑</el-button>
             <el-button type="danger" size="mini" icon="el-icon-delete" @click="removeParams(scope.row.goods_id)">删除</el-button>
           </template>
         </el-table-column>
@@ -47,26 +47,27 @@
     </el-card>
 
     <el-dialog title="商品编辑" :visible.sync="editDialogVisible" width="50%" @close="editDialogClosed">
-      <el-form :model="goodsForm" :rules="goodsFormRules" ref="goodsFormRef" label-width="100px" class="demo-ruleForm">
+      <el-form :model="editGoodsForm" :rules="editGoodsFormRules" ref="editGoodsFormRef" label-width="100px" class="demo-ruleForm">
         <el-form-item label="商品名称" prop="goodsName">
-          <el-input v-model="goodsForm.goodsName"></el-input>
+          <el-input v-model="editGoodsForm.goods_name"></el-input>
         </el-form-item>
         <el-form-item label="商品价格" prop="goodsPrice">
-          <el-input v-model="goodsForm.goodsPrice"></el-input>
+          <el-input v-model="editGoodsForm.goods_price"></el-input>
         </el-form-item>
         <el-form-item label="商品重量" prop="goodsWeight">
-          <el-input v-model="goodsForm.goodsWeight"></el-input>
+          <el-input v-model="editGoodsForm.goods_weight"></el-input>
         </el-form-item>
         <el-form-item label="商品数量" prop="goodsNumber">
-          <el-input v-model="goodsForm.goodsNumber"></el-input>
+          <el-input v-model="editGoodsForm.goods_number"></el-input>
         </el-form-item>
         <el-form-item label="商品介绍" prop="goodsIntroduce">
-          <el-input v-model="goodsForm.goodsIntroduce"></el-input>
+          <el-input v-model="editGoodsForm.goods_introduce"></el-input>
         </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
-        <el-button @click="dialogVisible = false">取 消</el-button>
-        <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
+        <el-button @click="editDialogVisible = false">取 消</el-button>
+        <!-- <el-button type="primary" @click="dialogVisible = false">确 定</el-button> -->
+        <el-button type="primary" @click="editGoodInfo">确 定</el-button>
       </span>
     </el-dialog>
   </div>
@@ -93,13 +94,13 @@ export default {
         pics: [],
         attrs: []
       },
-      goodsForm: {},
-      goodsFormRules: {
-        goodsName: [{ required: true, message: '请输入商品名称', trigger: 'blur' }],
-        goodsPrice: [{ required: true, message: '请输入商品价格', trigger: 'blur' }],
-        goodsNumber: [{ required: true, message: '请输入商品数量', trigger: 'blur' }],
-        goodsWeight: [{ required: true, message: '请输入商品重量', trigger: 'blur' }],
-        goodsIntroduce: [{ required: true, message: '请输入商品介绍', trigger: 'blur' }]
+      editGoodsForm: {},
+      editGoodsFormRules: {
+        goods_name: [{ required: true, message: '请输入商品名称', trigger: 'blur' }],
+        goods_price: [{ required: true, message: '请输入商品价格', trigger: 'blur' }],
+        goods_number: [{ required: true, message: '请输入商品数量', trigger: 'blur' }],
+        goods_weight: [{ required: true, message: '请输入商品重量', trigger: 'blur' }],
+        goods_introduce: [{ required: true, message: '请输入商品介绍', trigger: 'blur' }]
       }
     }
   },
@@ -130,33 +131,63 @@ export default {
       this.queryInfo.pagenum = newPage
       this.getGoodsList()
     },
-    async editDialog(attrId) {
-      // console.log('attrId的值为', attrId)
-      this.editDialogVisible = true
-      // const { data: res } = await this.$http.put(`goods/${attrId}`, {
-      //   goods_name: this.goodInfo.goodsName,
-      //   goods_price: this.goodInfo.goodsPrice,
-      //   goods_number: this.goodInfo.goodsNumber,
-      //   goods_weight: this.goodInfo.goodsWeight,
-      //   goods_introduce: this.goodInfo.goodsIntroduce,
-      //   pics: this.goodInfo.pics,
-      //   attrs: this.goodInfo.attrs
-      // })
-
-      const { data: res } = await this.$http.put(`goods/${attrId}`, { params: this.goodInfo })
-      if (res.meta.status !== 201) {
-        return this.$message.error('获取商品失败')
+    async showEditDialog(id) {
+      const { data: res } = await this.$http.get('goods/' + id)
+      if (res.meta.status !== 200) {
+        return this.$message.error('查询商品信息失败')
       }
-      this.$message.success('获取商品成功')
-      // this.goodsForm = res.data
-      this.goodsForm.goodsName = res.data.goods_name
-      this.goodsForm.goodsPrice = res.data.goods_price
-      this.goodsForm.goodsNumber = res.data.goods_number
-      this.goodsForm.goodsWeight = res.data.goods_weight
-      this.goodsForm.goodsIntroduce = res.data.goods_introduce
+      this.$message.success('查询商品信息成功')
+      // console.log('res的信息为', res)
+      this.editGoodsForm = res.data
+      this.editDialogVisible = true
+    },
+
+    async editGoodInfo() {
+      // console.log('attrId的值为', attrId)
+      this.$refs.editGoodsFormRef.validate(async valid => {
+        if (!valid) return
+        const { data: res } = await this.$http.put(`goods/${this.editGoodsForm.goods_id}`, {
+          goods_name: this.editGoodsForm.goods_name,
+          goods_price: this.editGoodsForm.goods_price,
+          goods_number: this.editGoodsForm.goods_number,
+          goods_weight: this.editGoodsForm.goods_weight,
+          goods_introduce: this.editGoodsForm.goods_introduce,
+          goods_cat: this.editGoodsForm.goods_cat
+          // goods_cat: ''
+          // pics: this.editGoodsForm.pics,
+          // attrs: this.editGoodsForm.attrs
+        })
+        if (res.meta.status !== 200) {
+          // console.log('editGoodsForm的信息为', this.editGoodsForm)
+          // console.log('res的值为', res)
+          return this.$message.error('修改商品失败')
+        }
+        this.$message.success('修改商品成功')
+        // this.goodsForm = res.data
+        this.editGoodsForm.goods_name = res.data.goods_name
+        this.editGoodsForm.goods_price = res.data.goods_price
+        this.editGoodsForm.goods_number = res.data.goods_number
+        this.editGoodsForm.goods_weight = res.data.goods_weight
+        this.editGoodsForm.goods_introduce = res.data.goods_introduce
+        this.editDialogVisible = false
+      })
+
+      // const { data: res } = await this.$http.put(`goods/${attrId}`, { params: this.goodInfo })
+      // const { data: res } = await this.$http.put(`goods/${attrId}`, form)
+      // if (res.meta.status !== 201) {
+      //   console.log('res的值为', res)
+      //   return this.$message.error('获取商品失败')
+      // }
+      // this.$message.success('获取商品成功')
+      // // this.goodsForm = res.data
+      // this.goodsForm.goodsName = res.data.goods_name
+      // this.goodsForm.goodsPrice = res.data.goods_price
+      // this.goodsForm.goodsNumber = res.data.goods_number
+      // this.goodsForm.goodsWeight = res.data.goods_weight
+      // this.goodsForm.goodsIntroduce = res.data.goods_introduce
     },
     editDialogClosed() {
-      this.$refs.goodsFormRef.resetFields()
+      this.$refs.editGoodsFormRef.resetFields()
     },
     goAddpage() {
       this.$router.push('/goods/add')

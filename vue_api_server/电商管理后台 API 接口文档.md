@@ -1306,7 +1306,7 @@ type=tree
     },
     "meta": {
         "msg": "创建商品成功",
-        "status": 201
+        "status": 200
     }
 }
 ```
